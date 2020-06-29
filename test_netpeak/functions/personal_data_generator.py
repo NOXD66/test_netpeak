@@ -19,12 +19,3 @@ def random_email():
 
 def random_phone_number():
     return '+380' + ''.join(str(random.randint(0, 9)) for i in range(9))
-
-# if __name__ == "__main__":
-
-
-# d = random_date_generator()
-# year = f(d)
-# random_date_generator()
-# )
-#     print(random_phone_number())
