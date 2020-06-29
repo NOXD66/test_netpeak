@@ -1,0 +1,58 @@
+from functions.main_page import MainPage
+import unittest
+from selenium import webdriver
+import functions.personal_data_generator as dg
+
+
+class Task1(unittest.TestCase):
+    driver = webdriver.Chrome()
+    driver.maximize_window()
+
+    @classmethod
+    def setUpClass(cls):
+        cls.main = MainPage(driver=cls.driver)
+        cls.name = dg.random_string()
+        cls.lastname = dg.random_string()
+        cls.email = dg.random_email()
+        cls.phone_number = dg.random_phone_number()
+        cls.file_path = "/test/test1.png"
+
+    # 1. Перейти по ссылке на главную страницу сайта Netpeak. (https://netpeak.ua/)
+    def test_1(self):
+        self.main.open_main_page()
+
+    # 2. Перейдите на страницу "Работа в Netpeak", нажав на кнопку "Карьера"
+    def test_2(self):
+        self.main.click_career_link()
+
+    # 3. Перейти на страницу заполнения анкеты, нажав кнопку - "Я хочу работать в Netpeak"
+    def test_3(self):
+        self.main.click_hiring_form()
+
+    # 4. Загрузить файл с недопустимым форматом в блоке "Резюме", например png, и проверить что на странице появилось
+    # сообщение, о том что формат изображения неверный.
+    def test_4(self):
+        self.main.fill_personal_data_form(file=self.file_path)
+
+    # 5. Заполнить случайными данными блок "3. Личные данные"
+    def test_5(self):
+        self.main.fill_personal_data_form(name=self.name, lastname=self.lastname, email=self.email,
+                                          phone=self.phone_number)
+
+    # 6. Нажать на кнопку отправить резюме
+    # 7. Проверить что сообщение на текущей странице  - "Все поля являются обязательными для заполнения" - подсветилось
+    # красным цветом
+    def test_6(self):
+        self.main.send_resume()
+
+    # 8. Нажать на логотип для перехода на главную страницу и убедиться что открылась нужная страница.
+    def test_7(self):
+        self.main.click_on_logo()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
+
+
+if __name__ == "__main__":
+    unittest.main()
